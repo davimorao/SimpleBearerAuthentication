@@ -1,8 +1,8 @@
-﻿using Poc.JWT.Domain.Entities;
+﻿using SimpleBearerAuthentication.Api.Domain.Entities;
 using System.Collections.Generic;
 using System.Linq;
 
-namespace Poc.JWT.Repository
+namespace SimpleBearerAuthentication.Api.Repository
 {
     public static class UserRepository
     {

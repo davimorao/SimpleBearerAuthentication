@@ -1,4 +1,4 @@
-﻿namespace Poc.JWT
+﻿namespace SimpleBearerAuthentication.Api
 {
     public static class Settings
     {

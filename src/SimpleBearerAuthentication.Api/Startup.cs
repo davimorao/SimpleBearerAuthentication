@@ -7,7 +7,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
 
-namespace Poc.JWT
+namespace SimpleBearerAuthentication.Api
 {
     public class Startup
     {

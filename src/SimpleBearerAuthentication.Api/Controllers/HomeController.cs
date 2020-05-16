@@ -1,11 +1,11 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
-using Poc.JWT.Domain.Entities;
-using Poc.JWT.Domain.Services;
-using Poc.JWT.Repository;
+using SimpleBearerAuthentication.Api.Domain.Entities;
+using SimpleBearerAuthentication.Api.Domain.Services;
+using SimpleBearerAuthentication.Api.Repository;
 using System.Threading.Tasks;
 
-namespace Poc.JWT.Controllers
+namespace SimpleBearerAuthentication.Api.Controllers
 {
     [Route("v1/account")]
     public class HomeController : ControllerBase

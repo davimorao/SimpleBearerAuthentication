@@ -3,9 +3,9 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using Microsoft.IdentityModel.Tokens;
-using Poc.JWT.Domain.Entities;
+using SimpleBearerAuthentication.Api.Domain.Entities;
 
-namespace Poc.JWT.Domain.Services
+namespace SimpleBearerAuthentication.Api.Domain.Services
 {
     public static class TokenService
     {

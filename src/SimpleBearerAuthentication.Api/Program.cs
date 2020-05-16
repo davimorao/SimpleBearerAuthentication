@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Hosting;
 
-namespace Poc.JWT
+namespace SimpleBearerAuthentication.Api
 {
     public class Program
     {

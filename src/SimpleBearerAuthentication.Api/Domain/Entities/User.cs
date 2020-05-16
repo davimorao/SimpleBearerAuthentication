@@ -1,4 +1,4 @@
-﻿namespace Poc.JWT.Domain.Entities
+﻿namespace SimpleBearerAuthentication.Api.Domain.Entities
 {
     public class User
     {
