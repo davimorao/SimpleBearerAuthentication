@@ -1,0 +1,250 @@
+{
+	"info": {
+		"_postman_id": "535437fd-eb5c-482f-ae9b-8b6b7a7b93f3",
+		"name": "Bearer with integration tests",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "Login",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "98322a74-e44e-4754-84d5-a2b8f3601a1d",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
+							"",
+							"pm.test(\"Token JWT is valid.\", function () {",
+							"    var jsonData = pm.response.json();",
+							"    // test token",
+							"    pm.expect(jsonData.token).not.eql(null);",
+							"    // Setting global variable.",
+							"    pm.collectionVariables.set(\"token_jwt\", jsonData.token);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "conte",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\n    \"username\": \"davi\",\n    \"password\": \"davi\"\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "https://localhost:5001/v1/account/Login",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"v1",
+						"account",
+						"Login"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Anonymous",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "922d51cd-9528-4bbd-8f86-9233363cd122",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/v1/account/anonymous",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"v1",
+						"account",
+						"anonymous"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Authenticated",
+			"event": [
+				{
+					"listen": "test",
+					"script": {
+						"id": "d3f52570-49ed-4cdf-80d9-ddb2b3f33600",
+						"exec": [
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
+						],
+						"type": "text/javascript"
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"id": "9133e85e-b306-4294-9820-df20d3ae73a4",
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/v1/account/authenticated",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"v1",
+						"account",
+						"authenticated"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Role Manager",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/v1/account/manager",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"v1",
+						"account",
+						"manager"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Role Account",
+			"request": {
+				"auth": {
+					"type": "bearer",
+					"bearer": [
+						{
+							"key": "token",
+							"value": "{{token_jwt}}",
+							"type": "string"
+						}
+					]
+				},
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "https://localhost:5001/v1/account/account",
+					"protocol": "https",
+					"host": [
+						"localhost"
+					],
+					"port": "5001",
+					"path": [
+						"v1",
+						"account",
+						"account"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"id": "af042444-74a3-4ebf-bc30-6a9852e65679",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"id": "18545939-a405-4473-854c-da72df088f69",
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"id": "23cd1dc3-56bf-494c-9a8d-89a48680a7b4",
+			"key": "token_jwt",
+			"value": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1bmlxdWVfbmFtZSI6ImRhdmkiLCJyb2xlIjoibWFuYWdlciIsIm5iZiI6MTU4OTY2NDg0NywiZXhwIjoxNTg5NjY0OTY3LCJpYXQiOjE1ODk2NjQ4NDd9.GmD-XhwQUR85oqInmZ-A2pC04ODYBFxktJQyd3avR6c",
+			"type": "string"
+		}
+	],
+	"protocolProfileBehavior": {}
+}
