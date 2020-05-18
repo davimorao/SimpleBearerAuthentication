@@ -1,11 +1,19 @@
-using System.Text;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.AspNetCore.Mvc.ApiExplorer;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.IdentityModel.Tokens;
+using Microsoft.OpenApi.Models;
+using Swashbuckle.AspNetCore.SwaggerGen;
+using Swashbuckle.AspNetCore.SwaggerUI;
+using System;
+using System.Collections.Generic;
+using System.IO;
+using System.Reflection;
+using System.Text;
 
 namespace SimpleBearerAuthentication.Api
 {
@@ -24,7 +32,7 @@ namespace SimpleBearerAuthentication.Api
             services.AddCors();
             services.AddControllers();
 
-            // Add JWT
+            // JWT
             var secretKey = Encoding.ASCII.GetBytes(Settings.Secret);
             services.AddAuthentication(x =>
             {
@@ -42,6 +50,45 @@ namespace SimpleBearerAuthentication.Api
                     ValidateIssuer = false,
                     ValidateAudience = false
                 };
+            });
+
+            // Swagger
+            services.AddSwaggerGen(c =>
+            {
+                c.SwaggerDoc("v1.0", new OpenApiInfo { Title = "Simple Bearer Authentication Api", Version = "v1.0" });
+                c.AddSecurityDefinition("Bearer", new OpenApiSecurityScheme
+                {
+                    Description = @"JWT Authorization header using the Bearer scheme. \r\n\r\n 
+                      Enter 'Bearer' [space] and then your token in the text input below.
+                      \r\n\r\nExample: 'Bearer 12345abcdef'",
+                    Name = "Authorization",
+                    In = ParameterLocation.Header,
+                    Type = SecuritySchemeType.ApiKey,
+                    Scheme = "Bearer"
+                });
+
+                c.AddSecurityRequirement(new OpenApiSecurityRequirement(){
+                {
+                new OpenApiSecurityScheme
+                {
+                    Reference = new OpenApiReference{
+                        Type = ReferenceType.SecurityScheme,
+                        Id = "Bearer"
+                    },
+                    Scheme = "oauth2",
+                    Name = "Bearer",
+                    In = ParameterLocation.Header,
+                },
+                new List<string>()
+                }
+                });
+
+                c.DescribeAllParametersInCamelCase();
+
+                var path = System.AppDomain.CurrentDomain.BaseDirectory;
+                var files = Directory.GetFiles(path, "*.xml");
+                foreach (var item in files)
+                    c.IncludeXmlComments(item);
             });
         }
 
@@ -71,6 +118,17 @@ namespace SimpleBearerAuthentication.Api
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
+            });
+
+            // Swagger
+            app.UseSwagger();
+            app.UseSwaggerUI(c =>
+            {
+                c.SwaggerEndpoint("/swagger/v1.0/swagger.json", "Version v1.0");
+
+                c.DocumentTitle = "Simple Bearer Authentication API";
+                c.DocExpansion(DocExpansion.None);
+                c.RoutePrefix = "docs";
             });
         }
     }
